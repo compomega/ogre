@@ -66,6 +66,27 @@ namespace Ogre {
 
     void SwitchEGLWindow::windowMovedOrResized()
     {
+        switch(appletGetOperationMode())
+        {
+            default:
+            case AppletOperationMode_Handheld:
+                LogManager::getSingletonPtr()->logMessage("Switched to handheld mode.");
+                mWidth = 1280;
+                mHeight = 720;
+                break;
+            case AppletOperationMode_Docked:
+                LogManager::getSingletonPtr()->logMessage("Switched to docked mode.");
+                mWidth = 1920;
+                mHeight = 1080;
+                break;
+        }
+
+        nwindowSetCrop(mWindow, 0, 0, mWidth, mHeight);
+
+        // Notify viewports of resize
+        ViewportList::iterator it = mViewportList.begin();
+        while( it != mViewportList.end() )
+            (*it++).second->_updateDimensions();
     }
 
     void SwitchEGLWindow::switchFullScreen(bool fullscreen)
@@ -83,8 +104,6 @@ namespace Ogre {
         mIsFullScreen = true;
         mIsExternal = false;
         mHwGamma = false;
-        mWidth = 1920;
-        mHeight = 1080;
 
         // Create the window and GL context.
         _notifySurfaceDestroyed();
@@ -142,6 +161,9 @@ namespace Ogre {
 
         mContext = createEGLContext();
         mContext->setCurrent();
+
+        // Crop and adjust the window size.
+        windowMovedOrResized();
 
         mActive = true;
         mVisible = true;
