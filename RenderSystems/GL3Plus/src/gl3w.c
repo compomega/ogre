@@ -72,6 +72,22 @@ static GL3WglProc get_proc(const char *proc)
 	*(void **)(&res) = dlsym(libgl, proc);
 	return res;
 }
+#elif defined(__SWITCH__)
+#include <EGL/egl.h>
+#include <EGL/eglext.h>
+
+static void open_libgl(void)
+{
+}
+
+static void close_libgl(void)
+{
+}
+
+static GL3WglProc get_proc(const char *proc)
+{
+    return (GL3WglProc)eglGetProcAddress(proc);
+}
 #else
 #include <dlfcn.h>
 #include <GL/glx.h>

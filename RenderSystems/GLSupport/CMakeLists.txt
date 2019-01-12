@@ -82,6 +82,13 @@ elseif (UNIX)
     
     set(PLATFORM_LIBS ${X11_LIBRARIES} ${X11_Xrandr_LIB} ${OPENGL_gl_LIBRARY})
   endif()
+elseif (SWITCH)
+  file(GLOB PLATFORM_HEADERS "include/EGL/Switch/*.h" "include/EGL/*.h")
+  file(GLOB PLATFORM_SOURCES "src/EGL/Switch/*.cpp" "src/EGL/*.cpp")
+
+  set(NATIVE_INCLUDES
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/EGL
+      ${CMAKE_CURRENT_SOURCE_DIR}/include/EGL/Switch)
 endif ()
 
 file(GLOB GLSUPPORT_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")

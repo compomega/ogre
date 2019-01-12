@@ -32,7 +32,7 @@ THE SOFTWARE.
 #   define newlocale(cat, loc, base) _create_locale(cat, loc)
 #endif
 
-#if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID || OGRE_PLATFORM == OGRE_PLATFORM_EMSCRIPTEN || defined(__MINGW32__)
+#if OGRE_PLATFORM == OGRE_PLATFORM_ANDROID || OGRE_PLATFORM == OGRE_PLATFORM_EMSCRIPTEN || OGRE_PLATFORM == OGRE_PLATFORM_SWITCH || defined(__MINGW32__)
 #   define newlocale(cat, loc, base) 0
 #endif
 

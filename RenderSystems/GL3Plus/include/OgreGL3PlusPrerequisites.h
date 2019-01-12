@@ -68,6 +68,8 @@ namespace Ogre {
 #   include <GL/gl3w.h>
 #elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE
 #   include <GL/gl3w.h>
+#elif OGRE_PLATFORM == OGRE_PLATFORM_SWITCH
+#   include <GL/gl3w.h>
 #endif
 
 // Lots of generated code in here which triggers the new VC CRT security warnings

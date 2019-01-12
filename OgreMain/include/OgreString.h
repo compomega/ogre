@@ -59,6 +59,16 @@ THE SOFTWARE.
 #   include <xlocale.h>
 #endif
 
+#if OGRE_PLATFORM == OGRE_PLATFORM_SWITCH
+#   include <stdlib.h>
+#   include <xlocale.h>
+#   include <strings.h>
+
+#   define strtod_l(ptr, end, l) strtod(ptr, end)
+#   define strtoul_l(ptr, end, base, l) strtoul(ptr, end, base)
+#   define strtol_l(ptr, end, base, l) strtol(ptr, end, base)
+#endif
+
 namespace Ogre {
     /** \addtogroup Core
      *  @{

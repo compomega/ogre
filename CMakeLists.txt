@@ -42,7 +42,24 @@ if (APPLE AND NOT ANDROID)
   add_definitions(-D__ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORES=0)
 endif ()
 
+if (SWITCH)
+  set(CMAKE_SIZEOF_VOID_P 8)
+
+  include_directories(SYSTEM
+    $ENV{DEVKITPRO}/portlibs/switch/include
+    $ENV{DEVKITPRO}/libnx/include
+  )
+
+  add_definitions(-D__SWITCH__=1)
+endif ()
+
 project(OGRE)
+
+if (SWITCH)
+  set(SWITCH_FLAGS "-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIE")
+  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SWITCH_FLAGS}")
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SWITCH_FLAGS}")
+endif ()
 
 # Include necessary submodules
 set(CMAKE_MODULE_PATH
@@ -175,7 +192,7 @@ if((CMAKE_CXX_COMPILER_ID MATCHES "Clang|GNU") AND NOT OGRE_STATIC)
 endif()
 
 # determine system endianess
-if (MSVC OR ANDROID OR EMSCRIPTEN OR APPLE_IOS)
+if (MSVC OR ANDROID OR EMSCRIPTEN OR APPLE_IOS OR SWITCH)
   # This doesn't work on VS 2010
   # MSVC only builds for intel anyway
   # all IOS devices are little endian
@@ -258,6 +275,8 @@ elseif(EMSCRIPTEN)
   set(OGRE_STATIC TRUE CACHE BOOL "Forcing static build for Emscripten" FORCE)
 
   set(OGRE_CONFIG_THREADS "0" CACHE STRING "Threading is unstable on Emscripten" FORCE)
+elseif (SWITCH)
+  set(OGRE_CONFIG_THREADS "0" CACHE STRING "Threading needs some work on Nintendo Switch" FORCE)
 elseif (APPLE AND NOT APPLE_IOS)
 
   set(XCODE_ATTRIBUTE_SDKROOT macosx)
@@ -312,7 +331,11 @@ include(Dependencies)
 
 # Customise what to build
 option(OGRE_STATIC "Static build" FALSE)
-option(OGRE_ENABLE_PRECOMPILED_HEADERS "Use precompiled headers to speed up build" TRUE)
+if (SWITCH)
+  option(OGRE_ENABLE_PRECOMPILED_HEADERS "Use precompiled headers to speed up build" FALSE)
+else ()
+  option(OGRE_ENABLE_PRECOMPILED_HEADERS "Use precompiled headers to speed up build" TRUE)
+endif ()
 set(OGRE_RESOURCEMANAGER_STRICT "2" CACHE STRING 
   "Make ResourceManager strict for faster operation. Possible values:
   0 - OFF search in all groups twice - for case sensitive and insensitive lookup [DEPRECATED]

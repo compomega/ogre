@@ -40,7 +40,7 @@ list(REMOVE_ITEM SOURCE_FILES
 )
 
 # Add platform specific files
-if (EMSCRIPTEN)
+if (EMSCRIPTEN OR SWITCH)
   set(PLATFORM_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/OgreFileSystemLayerNoOp.cpp")
 elseif (WIN32)
   file(GLOB PLATFORM_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/src/WIN32/*.cpp")

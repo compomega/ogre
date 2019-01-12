@@ -155,6 +155,8 @@ namespace Ogre
                 }
 #elif OGRE_PLATFORM == OGRE_PLATFORM_APPLE_IOS || OGRE_PLATFORM == OGRE_PLATFORM_APPLE
                 mTempFileName = macTempFileName();
+#elif OGRE_PLATFORM == OGRE_PLATFORM_SWITCH
+                OGRE_EXCEPT(Exception::ERR_INTERNAL_ERROR, "Temporary file name generation failed.", "DeflateStream::init");
 #else
                 char tmpname[] = "/tmp/ogreXXXXXX";
                 if (mkstemp(tmpname) == -1)

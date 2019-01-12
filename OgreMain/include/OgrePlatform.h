@@ -41,6 +41,7 @@ namespace Ogre {
 #define OGRE_PLATFORM_ANDROID 5
 #define OGRE_PLATFORM_WINRT 7
 #define OGRE_PLATFORM_EMSCRIPTEN 8
+#define OGRE_PLATFORM_SWITCH 9
     
 #define OGRE_COMPILER_MSVC 1
 #define OGRE_COMPILER_GNUC 2
@@ -152,6 +153,8 @@ namespace Ogre {
 #   endif
 #elif defined(__ANDROID__)
 #   define OGRE_PLATFORM OGRE_PLATFORM_ANDROID
+#elif defined(__SWITCH__)
+#   define OGRE_PLATFORM OGRE_PLATFORM_SWITCH
 #else
 #   define OGRE_PLATFORM OGRE_PLATFORM_LINUX
 #endif
