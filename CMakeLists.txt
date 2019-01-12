@@ -42,24 +42,7 @@ if (APPLE AND NOT ANDROID)
   add_definitions(-D__ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORES=0)
 endif ()
 
-if (SWITCH)
-  set(CMAKE_SIZEOF_VOID_P 8)
-
-  include_directories(SYSTEM
-    $ENV{DEVKITPRO}/portlibs/switch/include
-    $ENV{DEVKITPRO}/libnx/include
-  )
-
-  add_definitions(-D__SWITCH__=1)
-endif ()
-
 project(OGRE)
-
-if (SWITCH)
-  set(SWITCH_FLAGS "-march=armv8-a -mtune=cortex-a57 -mtp=soft -fPIE")
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${SWITCH_FLAGS}")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SWITCH_FLAGS}")
-endif ()
 
 # Include necessary submodules
 set(CMAKE_MODULE_PATH
