@@ -35,12 +35,6 @@ THE SOFTWARE.
 #include <string.h>
 #include <stdlib.h>
 
-#if OGRE_PLATFORM == OGRE_PLATFORM_SWITCH
-#if !defined(strdup)
-extern "C" { char* strdup(const char*); }
-#endif // !defined(strdup)
-#endif // OGRE_PLATFORM == OGRE_PLATFORM_SWITCH
-
 /* Win32 directory operations emulation */
 #if OGRE_PLATFORM != OGRE_PLATFORM_WIN32 && OGRE_PLATFORM != OGRE_PLATFORM_WINRT
     

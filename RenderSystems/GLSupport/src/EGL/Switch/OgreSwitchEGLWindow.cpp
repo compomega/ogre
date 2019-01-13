@@ -31,6 +31,7 @@ THE SOFTWARE.
 
 #include "OgreSwitchEGLSupport.h"
 #include "OgreSwitchEGLWindow.h"
+#include "OgreLogManager.h"
 #include "OgreViewport.h"
 
 #include <switch.h>
@@ -66,22 +67,7 @@ namespace Ogre {
 
     void SwitchEGLWindow::windowMovedOrResized()
     {
-        switch(appletGetOperationMode())
-        {
-            default:
-            case AppletOperationMode_Handheld:
-                LogManager::getSingletonPtr()->logMessage("Switched to handheld mode.");
-                mWidth = 1280;
-                mHeight = 720;
-                break;
-            case AppletOperationMode_Docked:
-                LogManager::getSingletonPtr()->logMessage("Switched to docked mode.");
-                mWidth = 1920;
-                mHeight = 1080;
-                break;
-        }
-
-        nwindowSetCrop(mWindow, 0, 0, mWidth, mHeight);
+        _updateResolution();
 
         // Notify viewports of resize
         ViewportList::iterator it = mViewportList.begin();
@@ -104,6 +90,8 @@ namespace Ogre {
         mIsFullScreen = true;
         mIsExternal = false;
         mHwGamma = false;
+        mWidth = 1920;
+        mHeight = 1080;
 
         // Create the window and GL context.
         _notifySurfaceDestroyed();
@@ -163,10 +151,30 @@ namespace Ogre {
         mContext->setCurrent();
 
         // Crop and adjust the window size.
-        windowMovedOrResized();
+        _updateResolution();
 
         mActive = true;
         mVisible = true;
         mClosed = false;
+    }
+
+    void SwitchEGLWindow::_updateResolution()
+    {
+        switch(appletGetOperationMode())
+        {
+            default:
+            case AppletOperationMode_Handheld:
+                LogManager::getSingletonPtr()->logMessage("Switched to handheld mode.");
+                mWidth = 1280;
+                mHeight = 720;
+                break;
+            case AppletOperationMode_Docked:
+                LogManager::getSingletonPtr()->logMessage("Switched to docked mode.");
+                mWidth = 1920;
+                mHeight = 1080;
+                break;
+        }
+
+        nwindowSetCrop((NWindow*)mWindow, 0, 1080 - mHeight, mWidth, 1080);
     }
 }

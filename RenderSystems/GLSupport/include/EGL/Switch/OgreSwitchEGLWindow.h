@@ -35,6 +35,9 @@ THE SOFTWARE.
 namespace Ogre {
     class _OgrePrivate SwitchEGLWindow : public EGLWindow
     {
+    private:
+        void _updateResolution();
+
     protected:
         virtual void getLeftAndTopFromNativeWindow(int & left, int & top, uint width, uint height);
         virtual void initNativeCreatedWindow(const NameValuePairList *miscParams);
